@@ -14,7 +14,7 @@ a look at the code. It's rather simple and could serve as a good starting point
 for you. If you really want to get hands one with the application you can start
 up the interactive console:
 
-  ./console.rb
+    ./console.rb
 
 Make sure you have ran `bundle` to install all the gems for this project.
 
