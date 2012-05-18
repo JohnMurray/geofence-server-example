@@ -63,15 +63,16 @@ end
 
 # start the console! :-)
 system('clear')
-puts <<eos
-This is my interactive playground. You can call the Sinatra methods in
-the same way you would in RSpec (get, post). There are also a couple of
-test fences defined for you (fence_1, fence_2). I also monkey-patched
-'pp' to print short arrays nicer.
-
-Everything you would want to play with (for this project) should be in here
-
+welcome = <<eos
+# This is my interactive playground. You can call the Sinatra methods in
+# the same way you would in RSpec (get, post). There are also a couple of
+# test fences defined for you (fence_1, fence_2). I also monkey-patched
+# 'pp' to print short arrays nicer.
+#
+# Everything you would want to play with (for this project) should be in here
+# 
 eos
+puts CodeRay.scan(welcome, :ruby).term
 Pry.start
 
 
