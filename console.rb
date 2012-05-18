@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
 
 # require all the necessary files
-require 'pry'
 $: << ::File.expand_path('../src', __FILE__)
 require 'app'
 require 'geofence'
+
+# at this point bundler should be setup and the :development group
+# should have been included. However, just to be sure, I'm going to
+# include bundler again and require the console group.
+require 'bundler/setup'
+Bundler.require(:console)
 
 # specify some sample fences to play with
 # 
