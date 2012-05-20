@@ -1,0 +1,6 @@
+[+] Added color output to welcome message in pry terminal.
+    should be easy given Pry already had color output (and gem to do it?)
+[+] Add spec templtates
+[ ] Create class/module MongoFence to hold all of the Mongo-logic for
+    storage an lookup of Mongo documents.
+[ ] Write geofence specs for existing method (bounding, horizontals)
