@@ -26,34 +26,16 @@ module Geofence
 
 
       # get the bounding-box for the polygon (1)
-      bounds = coords.inject({lat:0, lon:0}) do |max, c|
-        max[:lon] = c[0] if c[0] > max[:lon]
-        max[:lat] = c[1] if c[1] > max[:lat]
-        max
-      end
+      bounds = get_bounding_box(coords)
 
       # generate the grid within the bounding-box
-      # TODO generate teh grid
+      # TODO generate the grid
 
       # get the horizontals from the polygon (2)
       # TODO make this sexier (ugh...)
-      h1 = coords.inject([]) do |arr, (lon, lat)|
-        arr << lat unless arr.include? lat
-        arr
-      end
-      h2 = h1.dup
-      h1.pop
-      h2.shift
-      horizontals = h1.zip(h2)
+      horizontals = get_horizontals(coords)
 
       # split coordinates up into lines (makes life easier)
-      # Lines in format of:
-      # [
-      #   [<coordN>, <coord1>],
-      #   [<coord1>, <coord2>],
-      #   ...,
-      #   [<coordN-1>, <coordN>]
-      # ]
       lines = coords.zip(coords.dup.rotate(-1))
 
       # compute the grid (3)
@@ -73,6 +55,41 @@ module Geofence
     # lon), return the poition relative to the fence. This includes two vaules:
     # inside-fence  and  outside-fence
     def self.relative_to_fence(id, pos)
+    end
+
+
+    private
+    def self.get_bounding_box(coords)
+      coords.inject({lat:0, lon:0}) do |max, c|
+        max[:lon] = c[0] if c[0] > max[:lon]
+        max[:lat] = c[1] if c[1] > max[:lat]
+        max
+      end
+    end
+
+    # The lines represent lines on the polygons. For example, a triangle
+    # of points: [a, b, c] would have lines of:
+    #   (a,b) (b,c) (c,a)
+    # 
+    # Lines in format of:
+    # [
+    #   [<coordN>, <coord1>],
+    #   [<coord1>, <coord2>],
+    #   ...,
+    #   [<coordN-1>, <coordN>]
+    # ]
+    def self.get_horizontals(coords)
+      #get all individual horizontals
+      h1 = coords.inject([]) do |arr, (lon, lat)|
+        arr << lat unless arr.include? lat
+        arr
+      end
+
+      #wrap those individuals up into cyclic pairs
+      h2 = h1.dup
+      h1.pop
+      h2.shift
+      h1.zip(h2)
     end
 
 end
