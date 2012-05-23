@@ -39,6 +39,12 @@ module Geofence
       # compute the grid (3)
       # TODO rewrite for new horizontal structure
       grid = generate_grid(bounds)
+      horizontals.each do |horizontal|
+        intersecting_lines(horizontal, lines).each do |line|
+          # TODO calculate grid-blocks that are to left of line
+          #      and include/remove them into the estimated polygon
+        end
+      end
 
       
     end
