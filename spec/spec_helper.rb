@@ -11,7 +11,7 @@ Bundler.require(:test)
 
 # require any helpers
 d = File.join(File.expand_path('../', __FILE__), 'helpers', '*.rb')
-Dir['helpers/*'].each {|f| require f}
+Dir[d].each {|f| require f}
 
 
 # setup rspec the way we need it

@@ -66,6 +66,12 @@ self.instance_eval do
 end
 
 
+# add ability to reload console
+def reload
+  exec('./console')
+end
+
+
 # start the console! :-)
 system('clear')
 welcome = <<eos
