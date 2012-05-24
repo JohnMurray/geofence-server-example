@@ -35,11 +35,13 @@ module Geofence
 
       # split coordinates up into lines (makes life easier)
       lines = coords.zip(coords.dup.rotate(-1))
+      lines.map! {|l| l.sort! {|a,b| a.last <=> b.last } }
 
       # compute the grid (3)
-      # TODO rewrite for new horizontal structure
       grid = generate_grid(bounds)
+      estimated_fence = []
       horizontals.each do |horizontal|
+        # get the intersecting lines (3-a)
         intersecting_lines(horizontal, lines).each do |line|
           # TODO calculate grid-blocks that are to left of line
           #      and include/remove them into the estimated polygon
@@ -145,7 +147,17 @@ module Geofence
     # horizontal (or horizontal sub-section if you prefer to think of it that
     # way)
     # 
-    # TODO draw nice little-diagram like in the Mavia-ES-Geofence code
+    # 
+    # ---*------------------------------------------------
+    #     \
+    #      \  - intersecting line           [horizontal section]
+    #       \
+    # -------*--------------------------------------------
+    #        |
+    #        |
+    #        |
+    #        ...
+    # 
     # 
     # h  = horizontal
     # ls = lines
