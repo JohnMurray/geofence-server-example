@@ -1,3 +1,4 @@
 [ ] Create class/module MongoFence to hold all of the Mongo-logic for
     storage an lookup of Mongo documents.
 [ ] Write more specs for generating the grid (not really done yet)
+[ ] Write specs for 'intersecting_lines' function in geofence.rb

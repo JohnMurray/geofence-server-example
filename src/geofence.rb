@@ -97,6 +97,7 @@ module Geofence
       end
 
       #wrap those individuals up into cyclic pairs
+      h1.sort!
       h2 = h1.dup
       h1.pop
       h2.shift
@@ -136,6 +137,22 @@ module Geofence
       end
 
       grid
+    end
+
+
+    # Given a horizonal (two lat points) and the set of lines that constitute
+    # our polygon, determine what lines intersect the space created by the
+    # horizontal (or horizontal sub-section if you prefer to think of it that
+    # way)
+    # 
+    # TODO draw nice little-diagram like in the Mavia-ES-Geofence code
+    # 
+    # h  = horizontal
+    # ls = lines
+    def self.intersecting_lines(h, ls)
+      ls.select do |l|
+        l.first.last <= h.first && l.last.last >= h.last
+      end
     end
 
 end
