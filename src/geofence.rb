@@ -39,16 +39,30 @@ module Geofence
 
       # compute the grid (3)
       grid = generate_grid(bounds)
-      estimated_fence = []
+      estimated_fence = Set.new([])
       horizontals.each do |horizontal|
         # get the intersecting lines (3-a)
+        # and iterate through them (3-b)
         intersecting_lines(horizontal, lines).each do |line|
-          # TODO calculate grid-blocks that are to left of line
-          #      and include/remove them into the estimated polygon
+          # iterate throught the horizontal sub-sections (3-b-i)
+          sub_grid = grid.select do |g|
+            g.last.between?(line.first.last, line.last.last)
+          end
+          sub_grid.each do |point|
+            if det(line, point) > 0
+              # remove existing point from estimate (3-b-i-1)
+              if estimated_fence.include?(point)
+                estimated_fence.delete(point)
+              # add point to estimate (3-b-i-2)
+              else
+                estimated_fence << point
+              end
+            end
+          end
         end
       end
 
-      
+      estimated_fence
     end
 
 
@@ -165,6 +179,41 @@ module Geofence
       ls.select do |l|
         l.first.last <= h.first && l.last.last >= h.last
       end
+    end
+
+   
+    # Get the determinant of a line and a point. This is conceptually
+    # represented by the following:
+    # 
+    # point = (a,b)
+    # line  = [(x1, y1), (x2, y2)], such that y2 > y1
+    # 
+    # matrix:
+    # | (x2 - x1)    (a-x1) |
+    # | (y2 - y1)    (b-y1) |
+    # 
+    # determinent: 
+    #   (x2 - x1)*(b-y1)  -  (y2-y1)*(a-x1)
+    # 
+    # 
+    # Assertions:
+    #   determinent > 0  <->  point lies to left of line
+    #   determinent = 0  <->  point lies on the line
+    #   determinent < 0  <->  pont lies to right of line
+    #
+    # Line:  [[x1,y1],[x2,y2]]
+    # Point: [a,b]
+    def self.det(line, point)
+      x1 = line.first.first
+      y1 = line.first.last
+
+      x2 = line.last.first
+      y2 = line.last.last
+
+      a = point.first
+      b = point.last
+
+      (x2 - x1)*(b-y1)  -  (y2-y1)*(a-x1)
     end
 
 end
