@@ -70,6 +70,7 @@ end
 def reload
   reload_msg = '# Reloading the console...'
   puts CodeRay.scan(reload_msg, :ruby).term
+  Pry.save_history
   exec('./console')
 end
 
