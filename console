@@ -68,8 +68,16 @@ end
 
 # add ability to reload console
 def reload
+  reload_msg = '# Reloading the console...'
+  puts CodeRay.scan(reload_msg, :ruby).term
   exec('./console')
 end
+
+g = Class.new {
+  def method_missing(m, *args, &block)
+    Geofence.send(m, *args, &block)
+  end
+}.new
 
 
 # start the console! :-)
