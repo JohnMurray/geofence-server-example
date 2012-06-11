@@ -74,11 +74,37 @@ def reload
   exec('./console')
 end
 
+# add helper method to call Geofence methods (even private ones!)
 g = Class.new {
   def method_missing(m, *args, &block)
     Geofence.send(m, *args, &block)
   end
 }.new
+
+
+# Add helper method to visualize fences
+def print_fence(estimated_fence, grid)
+  visual_grid = {}
+  grid.each do |point|
+    xp, yp = *point
+
+    visual_grid[yp] ||= {}
+    if estimated_fence.include?(point)
+      visual_grid[yp][xp] = '+'
+    else
+      visual_grid[yp][xp] = '-'
+    end
+  end
+
+  visual_grid.keys.sort.each do |y|
+    xs = visual_grid[y]
+    xs.keys.sort.each do |x|
+      print visual_grid[y][x]
+    end
+    puts
+  end
+  nil
+end
 
 
 # start the console! :-)
