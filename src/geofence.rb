@@ -17,8 +17,9 @@ module Geofence
     # 1. Get the bounding box and generate grid within box
     # 2. Generate the horizontals
     # 3. Foreach horizontal secion of the grid
-    #   a. get the intersecting lines
-    #   b. for each instersecting line
+    #   a. generate the sub-grid (for the horizontal section)
+    #   b. get the intersecting lines
+    #   c. for each instersecting line
     #     i. for each grid-block within the horizontal sub-section
     #        1. add the grid-block if the block is to the left of
     #           the intersecting line 
@@ -41,13 +42,14 @@ module Geofence
       grid = generate_grid(bounds)
       estimated_fence = Set.new([])
       horizontals.each do |horizontal|
-        # get the intersecting lines (3-a)
+        # generate the sub-grid (3-a)
+        sub_grid = grid.select do |g|
+          g.last.between?(horizontal.first, horizontal.last)
+        end
+        # get the intersecting lines (3-b)
         # and iterate through them (3-b)
         intersecting_lines(horizontal, lines).each do |line|
           # iterate throught the horizontal sub-sections (3-b-i)
-          sub_grid = grid.select do |g|
-            g.last.between?(line.first.last, line.last.last)
-          end
           sub_grid.each do |point|
             if det(line, point) > 0
               # remove existing point from estimate (3-b-i-1)
