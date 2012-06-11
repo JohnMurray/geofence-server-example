@@ -96,7 +96,7 @@ def print_fence(estimated_fence, grid)
     end
   end
 
-  visual_grid.keys.sort.each do |y|
+  visual_grid.keys.sort{|a,b| b <=> a}.each do |y|
     xs = visual_grid[y]
     xs.keys.sort.each do |x|
       print visual_grid[y][x]
