@@ -12,13 +12,20 @@ module MongoCore
     # {
     #   _id: ObjectId(),
     #   coordinates: [
-    #     { Longitude: x, Latitude: y },
+    #     { lon: x, lat: y },
     #     ...
     #   ]
     # }
     def store_fence(fence)
       # TODO test mongo driver
-      # TODO convert fence from array to format above
+      # convert fence from array to format above
+      mongo_fence = []
+      fence.each do |coord|
+        mongo_fence << {
+          lon: coord[0],
+          lat: coord[1]
+        }
+      end
       # TODO store fence in Mongo
       # TODO ensure the index is applied
     end
