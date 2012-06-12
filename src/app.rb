@@ -2,6 +2,10 @@ require 'bundler/setup'
 Bundler.require(ENV['ENV'].nil? ? :development : ENV['ENV'].to_sym)
 require 'json'
 
+$: << ::File.expand_path('../', __FILE__)
+require 'mongo_core'
+require 'geofence'
+
 
 class App < Sinatra::Base
 

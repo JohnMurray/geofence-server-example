@@ -4,6 +4,7 @@
 $: << ::File.expand_path('../src', __FILE__)
 require 'app'
 require 'geofence'
+require 'mongo_core'
 
 # at this point bundler should be setup and the :development group
 # should have been included. However, just to be sure, I'm going to

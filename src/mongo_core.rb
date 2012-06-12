@@ -1,4 +1,5 @@
-module Mongo
+# A simple class for interacting w/ Mongo
+module MongoCore
   class << self 
     
     def init
