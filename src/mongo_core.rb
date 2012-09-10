@@ -30,9 +30,9 @@ module MongoCore
         }
       end
       # store fence in Mongo
-      @coll << { coordinates: mongo_fence }
+      @coll.insert( { coordinates: mongo_fence } )
       # ensure the index is applied
-      @coll.ensure_index([['coordinates', Mongo::GEO2D]])
+      @coll.ensure_index([[:coordinates, Mongo::GEO2D]])
     end
 
     # Coord is of format:
@@ -40,22 +40,15 @@ module MongoCore
     #   lon: x,
     #   lat: y
     # }
-    def within_fence?(coord, mongo_id)
+    def within_fence?(coord)
       # search for fence in Mongo given coordinate
-      fences = @coll.find({
-        'coordinates' => {
-          '$near'        => coord,
-          '$maxDistance' => SEARCH_RADIUS
-        },
-        '_id' => mongo_id
-      })
-
-      !fences.count.zero?
-    end
-
-
-    def get_all_fences
-      @coll.find.to_a
+      radius = 0.26    # same as 0.5 ** 2 + 0.01
+      @coll.find({
+        coordinates: {
+          :$near         => [coord[:lon], coord[:lat]],
+          :$maxDistance  => radius
+        }
+      }).count > 1
     end
 
   end
