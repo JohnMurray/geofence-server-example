@@ -1,4 +1,4 @@
-$: << ::File.expand_path('../src', __FILE__)
-require 'app'
+require './src/app'
+
 
 run App

@@ -68,13 +68,6 @@ module Geofence
     end
 
 
-    # Given the id (document id) of a particular fence and a position (lat,
-    # lon), return the poition relative to the fence. This includes two vaules:
-    # inside-fence  and  outside-fence
-    def self.relative_to_fence(id, pos)
-    end
-
-
     private
     def self.get_bounding_box(coords)
       # get max and min coords

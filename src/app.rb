@@ -11,6 +11,7 @@ class App < Sinatra::Base
 
   configure do
     mime_type :json, 'application/json'
+    set :port, 4242
   end
 
   before do
@@ -50,8 +51,5 @@ class App < Sinatra::Base
     in_fence = MongoCore.within_fence?(coords, mongo_id)
     { in_fence: in_fence }.to_json
   end
-
-
-  run! if $0 == __FILE__
 
 end

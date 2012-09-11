@@ -40,15 +40,22 @@ module MongoCore
     #   lon: x,
     #   lat: y
     # }
-    def within_fence?(coord)
+    def within_fence?(coords, mongo_id)
       # search for fence in Mongo given coordinate
-      radius = 0.26    # same as 0.5 ** 2 + 0.01
+      radius = 0.5199   # same as sqrt(0.5 ** 2) + 0.01
       @coll.find({
         coordinates: {
-          :$near         => [coord[:lon], coord[:lat]],
+          :$near         => coords, # [lon, lat]
           :$maxDistance  => radius
-        }
+        },
+        _id: mongo_id
       }).count > 1
+    end
+
+
+    # Return all of the fences straight from mongo
+    def get_all_fences
+      @coll.find.to_a
     end
 
   end
